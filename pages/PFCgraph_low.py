@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load data
-df = pd.read_csv("data.csv")
+df = pd.read_csv("./data/data.csv")
 
 # Food selection
 food_names = df['name'].unique()
