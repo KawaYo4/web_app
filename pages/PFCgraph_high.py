@@ -25,12 +25,12 @@ C = np.array([np.sqrt(3)/2, -0.5])
 
 # Draw PFC triangle
 def plot_pfc_triangle(protein, fat, carb):
-    fig, ax = plt.subplots(figsize=(6, 6))
-    ax.set_aspect('equal')
-    ax.axis('off')
+#    fig, ax = plt.subplots(figsize=(6, 6))
 
     # Gradient fill
     resolution = 300
+    xs, ys, colors = [], [], []
+    
     for i in range(resolution + 1):
         for j in range(resolution + 1 - i):
             a = i / resolution
@@ -46,9 +46,17 @@ def plot_pfc_triangle(protein, fat, carb):
             color_f = np.array([0.2, 1.0, 1.0]) * b
             color_c = np.array([1.0, 1.0, 0.2]) * c
             color = color_p + color_f + color_c
-  
-            ax.plot(x, y, marker='o', markersize=0.5, color=color, alpha=0.9)
+            
+            xs.append(x)
+            ys.append(y)
+            colors.append(color)    
+#            ax.plot(x, y, marker='o', markersize=0.5, color=color, alpha=0.9)
 
+    fig, ax = plt.subplots()
+    ax.scatter(xs, ys, c=colors, s=1, alpha=0.9, edgecolors='none')
+    ax.set_aspect('equal')
+    ax.axis('off')
+    
     # Triangle outline
     triangle = np.array([P, C, F, P])
     ax.plot(triangle[:, 0], triangle[:, 1], color='black')
@@ -140,6 +148,7 @@ def plot_pfc_triangle(protein, fat, carb):
     ax.text(x, y, f'  (P:{protein}%, F:{fat}%, C:{carb}%)', color='black', fontsize=12)
 
     return fig
+
 
 # Streamlit rendering
 st.subheader("PFC Balance Triangle")
