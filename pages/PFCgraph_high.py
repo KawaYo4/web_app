@@ -141,61 +141,6 @@ def plot_pfc_triangle(protein, fat, carb):
 
     return fig
 
-# Plot energy and nutrients
-# Plot energy and nutrients (updated version)
-def plot_energy_and_nutrients(data):
-    energy = data['エネルギー']
-    vit_fiber = ["ビタミンA", "ビタミンC", "ビタミンD", "食物繊維"]
-    minerals = ["食塩上限2.5g", "カルシウム", "鉄", "カリウム"]
-
-    # Adjust overall height to fit energy circle
-    fig_height = 3 + (energy / 500) * 2  # proportional height
-    fig = plt.figure(figsize=(8, fig_height))
-    gs = fig.add_gridspec(3, 2, height_ratios=[2, 0.2, 2])
-
-    # Energy (top)
-    ax0 = fig.add_subplot(gs[0, :])
-    ax0.set_title("Energy", fontsize=16)
-    ax0.set_aspect('equal')
-    ax0.set_xlim(0, 1)
-    ax0.set_ylim(0, 1)
-    ax0.axis('off')
-    radius = energy / 1000  # scale
-    ax0.add_patch(plt.Circle((0.5, 0.5), radius=radius, color='red', alpha=0.6))
-    ax0.text(0.5, 0.5, f"{energy:.0f} kcal", ha='center', va='center', fontsize=14)
-
-    # Vitamins & Fiber (bottom left)
-    ax1 = fig.add_subplot(gs[2, 0])
-    vals1 = [data[n] for n in vit_fiber]
-    ax1.barh(vit_fiber, vals1, color='skyblue')
-    ax1.set_title("Vitamins & Fiber", fontsize=12)
-    ax1.invert_yaxis()
-    ax1.yaxis.tick_right()
-    ax1.yaxis.set_label_position("right")
-    ax1.set_xlim(left=0)
-    ax1.spines['left'].set_position(('axes', 1.0))  # align center
-    ax1.spines['right'].set_visible(False)
-    ax1.spines['top'].set_visible(False)
-
-    # Minerals & Salt (bottom right)
-    ax2 = fig.add_subplot(gs[2, 1])
-    vals2 = [data[n] for n in minerals]
-    ax2.barh(minerals, vals2, color='orange')
-    ax2.set_title("Minerals & Salt", fontsize=12)
-    ax2.invert_yaxis()
-    ax2.yaxis.tick_left()
-    ax2.yaxis.set_label_position("left")
-    ax2.set_xlim(left=0)
-    ax2.spines['right'].set_position(('axes', 0.0))  # align center
-    ax2.spines['left'].set_visible(False)
-    ax2.spines['top'].set_visible(False)
-
-    plt.tight_layout()
-    return fig
-
 # Streamlit rendering
 st.subheader("PFC Balance Triangle")
 st.pyplot(plot_pfc_triangle(protein, fat, carb))
-
-st.subheader("Energy and Nutrients")
-st.pyplot(plot_energy_and_nutrients(data))
